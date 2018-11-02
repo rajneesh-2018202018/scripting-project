@@ -1,0 +1,31 @@
+{%extends 'base.html' %}
+{% block nav_status %}
+    {%if logged_in %}
+      <li><a href="/logout"><span class="glyphicon glyphicon-user"></span> {{username}}</a></li>
+    {%else%}
+      <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    {%endif%}
+
+    
+{% endblock %}
+
+{% block nav_left %}
+{% if logged_in %}
+<li><a href="/login"> Create Blog</a></li>
+{%endif%}
+{% endblock %}
+
+{%block content%}
+{%if logged_in%}
+<div class="sidebar">
+  <a href="#">Page</a>
+  <a href="/">Page</a>
+  <a href="/">Page</a>
+  <a href="/">Page</a>
+  <a href="/">Page</a>
+  <a href="/">Page</a>
+  <a href="/">Page</a>
+  <a href="/">Page</a>
+</div>
+{%endif%}
+{% endblock %}
