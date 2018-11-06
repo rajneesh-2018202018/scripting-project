@@ -1,11 +1,12 @@
 {%extends 'base.html' %}
 {% block nav_left %}
   {%if logged_in %}
-    <li><a href="/login"> Create Blog</a></li>
+    <li><a href="/editor"> Create Blog</a></li>
+    <li><a href="/admin"> Admin Mode</a></li>
   {%endif%}
 {% endblock %}
 
-{% block nav_status %}
+{% block nav_right %}
     {%if logged_in %}
       <li><a href="/logout"><span class="glyphicon glyphicon-user"></span> {{username}}</a></li>
     {%else%}
@@ -17,21 +18,30 @@
 {% endblock %}
 {%block content%}
 {%if logged_in%}
-<div class="container-fluid">
-<div class="sidebar">
-  <ul>
-  <li><a href="#">Page</a></li>
-  <li><a href="/">Page</a></li>
-  <li><a href="/">Page</a></li>
-  <li><a href="/">Page</a></li>
-  <li><a href="/">Page</a></li>
-  <li><a href="/">Page</a></li>
-  <li><a href="/">Page</a></li>
-  <li><a href="/">Page</a></li>
-  </ul>
+<div class="container">
+  <div class="row content">
+    <div class="col-sm-12">
+      {% for post in blogs %}
+        <hr>
+        <h2>{{post.user_name}}</h2>
+        <h5><span class="glyphicon glyphicon-time"></span>{{post.date}}</h5>
+        <h4>{{post.title}}</h4>
+        <p>{{post.content | safe }}</p>
+        <br><br>
+      {% endfor %}
+    </div>
+  </div>
 </div>
-<div>
-
+{%else%}
+<div class="container">
+<div class="row content">
+{% for post in blogs %}
+<hr>
+<h2>{{post.username}}</h2>
+<h5><span class="glyphicon glyphicon-time"></span>{{post.date}}</h5>
+<p>{{post.content | safe }}</p>
+<br><br>
+{% endfor %}
 </div>
 </div>
 {%endif%}

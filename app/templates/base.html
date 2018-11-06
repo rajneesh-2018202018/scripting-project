@@ -4,9 +4,19 @@
 {{super()}}
 <link rel="stylesheet"
       href="{{url_for('.static', filename='main.css')}}">
+<link rel="stylesheet"
+      href="{{url_for('.static', filename='css/font-awesome.min.css')}}">
+
 {% endblock %}
+
+{% block scripts %}
+<script src="{{url_for('.static', filename='myscripts.js')}}"></script>
+{{super()}}
+{% endblock %}
+
 {% block navbar %} 
-  <nav class="navbar navbar-default" style="z-index:2;height: 2em;">
+
+  <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
         <a class="navbar-brand" href="/">Blogger</a>
@@ -15,7 +25,7 @@
         {% block nav_left%}{% endblock %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
-          {% block nav_status %} {% endblock %}
+          {% block nav_right %} {% endblock %}
       </ul>
     </div>
   </nav>
