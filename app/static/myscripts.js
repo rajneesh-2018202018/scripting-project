@@ -35,3 +35,28 @@ function show()
   return y;
 }
 setTimeout(enable_iframe(),50)
+
+function get_comment(blog_id)
+{
+    var formData = new FormData();
+    formData.append('blog_id', blog_id);
+
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText)
+
+
+            text =   '<hr/><form action="/add_comment" class="form-inline" method = "post">'+
+            '<input type="text" class="form-control" name="plain_text" placeholder="Enter your comment here" style="width:80%;margin-right:1em;">'+
+            '<button class="btn btn-default" onclick="submit">Submit</button></form>'
+          
+        
+        document.getElementById("comment"+blog_id).innerHTML = this.responseText + text;
+        }
+    };
+    xhr.open('POST', 'http://127.0.0.1:5000/comment', true);
+    xhr.send(formData);
+    //   document.getElementById('text_name').value=y;
+    return y; 
+}

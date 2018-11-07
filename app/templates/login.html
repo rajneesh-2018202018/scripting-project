@@ -10,11 +10,11 @@
 <div class="container">
     <div class="row content">
     {% for post in blogs %}
-    <hr>
-    <h2><small>{{post.username}}</small></h2>
-    <h5><span class="glyphicon glyphicon-time"></span>{{post.date}}</h5>
-    <p>{{post.content | safe }}</p>
-    <br><br>
+      <hr>
+      <h2>{{post.title}}</h2>
+      <h5><span class="glyphicon glyphicon-time"></span>{{post.date}}</h5>
+      <p>{{post.content | safe }}</p>
+      <br><br>
     {% endfor %}
     </div>
 </div>

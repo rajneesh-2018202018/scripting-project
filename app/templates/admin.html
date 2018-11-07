@@ -2,13 +2,12 @@
 {% block nav_left %}
   {%if logged_in %}
     <li><a href="/editor"> Create Blog</a></li>
-    <li aria-selected="true"><a href="/admin"> Admin Mode</a></li>
   {%endif%}
 {% endblock %}
 
 {% block nav_right %}
     {%if logged_in %}
-      <li><a href="/logout"><span class="glyphicon glyphicon-user"></span> {{username}}</a></li>
+      <li><a href="/admin"><span class="glyphicon glyphicon-user"></span> {{username}}</a></li>
     {%endif%}
 
     
@@ -18,12 +17,12 @@
 <div class="container-fluid">
   <div class="row content">
     <div class="col-sm-3 sidenav">
-      <h4>John's Blog</h4>
+      <h4>{{ username }}</h4>
       <ul class="nav nav-pills nav-stacked">
-        <li class="active"><a href="#section1">Home</a></li>
-        <li><a href="#section2">Friends</a></li>
-        <li><a href="#section3">Family</a></li>
-        <li><a href="#section3">Photos</a></li>
+        <li class="active"><a href="#section1">Posts</a></li>
+        <li><a href="/comment_modes">Comments</a></li>
+        <li><a href="/themes">Themes</a></li>
+        <li><a href="/logout">Logout</a></li>
       </ul><br>
     </div>
 
@@ -35,6 +34,9 @@
         <h5><span class="glyphicon glyphicon-time"></span>{{post.date}}</h5>
         <h4><small>-- {{post.user_name}}</small></h4>
         <p>{{post.content | safe }}</p>
+        <button name="edit_blog" id="edit_blog" value="edit_blog" class="btn btn-primary">Edit Blog</button>
+        <button name="delete_blog" id="delete_blog" value="delete_blog" class="btn btn-danger">Delete Blog</button>
+        <button name="edit_blog" id="edit_blog" value="edit_blog" class="btn btn-primary">Show Comments</button>
         <br><br>
       {% endfor %}
     </div>

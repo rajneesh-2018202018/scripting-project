@@ -23,11 +23,11 @@ def index():
 def login():
     blogs_sent = dbHandler.getAll()
     if 'username' in session:
-        return render_template("index.html",logged_in = True, username = session["username"], blogs = blogs_sent)
+        return render_template("admin.html",logged_in = True, username = session["username"], blogs = blogs_sent)
     elif request.method == 'POST':
         if dbHandler.authenticate(request):
             session['username'] = request.form['username']
-            return render_template("admin.html",logged_in = True, username = session["username"], blogs = blogs_sent)
+            return render_template("index.html",logged_in = True, username = session["username"], blogs = blogs_sent)
         else:
             return render_template("login.html", logged_in=False, username=None)   
     return render_template('login.html', logged_in = False, username=None, blogs=blogs_sent)
@@ -84,7 +84,8 @@ def editor():
 
 @app.route('/admin')
 def admin():
-   blogs_sent = dbHandler.getAll()
+   blogs_sent = dbHandler.retrieveBlogs(session['username'])
+   print "in init --------------", session['username']
    if 'username' in session:
        return render_template("admin.html", logged_in = True,  username=session['username'], blogs=blogs_sent)
    else:
@@ -99,8 +100,23 @@ def showall():
 @app.route('/comment',methods = ['POST', 'GET'])
 def comments():
     if request.method == "GET":
-        msg = dbHandler.comment(request.args)
+        msg = dbHandler.comment(request.args["blog_id"])
     else:
-        msg = dbHandler.comment(request.form)
+        print "form : ",request.form["blog_id"]
+        msg = dbHandler.comment(request.form["blog_id"])
     
     return render_template('comment_div.html',user=msg)
+
+@app.route('/add_comment',methods = ['POST', 'GET'])
+def add_comment():
+    if request.method =="POST":
+        dbHandler.add_comment(request.form)
+        return index()
+    else:
+        return index()
+
+@app.route('/del_blog')
+def del_blog():
+        msg = dbHandler.del_blogs(request.args["blog_id"])
+        return render_template('admin.html',user=msg)
+    

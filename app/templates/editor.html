@@ -1,6 +1,7 @@
 {%extends 'base.html'%}
 {%block content%}
-<div>
+<div class="container">
+<div style="text-align:center">
     <button onclick="change('bold')" ><i class="fa fa-bold" aria-hidden="true"></i></button>
     <button onclick="change('italic')"><i class="fa fa-italic" aria-hidden="true"></i></button>
     <button onclick="change('underline')"><i class="fa fa-underline" aria-hidden="true"></i></button>
@@ -64,4 +65,5 @@
     <iframe name='rich_test' class="form-control" id="ifr1" style="width:100%;height:40%;" onkeyup="show()"></iframe>
     <br/>
     <button onclick="show()" class="form-control">submit</button>
+</div>
 {%endblock%}

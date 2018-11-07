@@ -44,18 +44,25 @@ def retrieveUsers():
 	return rows
   
 def retrieveBlogs(user=None): 
-	con = sql.connect("database.db")
-        # Uncomment line below if you want output in dictionary format
-	#con.row_factory = sql.Row
-	cur = con.cursor()
-        if user==None:
-	        cur.execute("SELECT * FROM blog_detail;")
-        else:
-                sqlQuery = "SELECT * from BLOGS where user = '%s'"%user
-                cur.execute(sqlQuery)
-	rows = cur.fetchall()
-	con.close()
-	return rows
+  try:
+    with sql.connect("database.db") as con:
+      print "-------------------------------inside Retrieve blogs------------------------------------------------"
+      con.row_factory = sql.Row
+      cur = con.cursor()
+      if user!=None:
+        print "======================Value of user=============================" + user
+        cur.execute("select * from blog_detail")
+        print "Query successfully executed-----------------------------------------"
+        rows = cur.fetchall()
+        print "tag"
+        users=[]
+        for row in rows:
+          if row['user_name']==user:
+            users.append(row)
+        return users
+  except:
+    print "Connection Error"
+    return([],"connection Fault")
 
 # add blog (Nawab)
 def addUser(user):
@@ -65,7 +72,7 @@ def addUser(user):
   
    with sql.connect("database.db") as con:
         cur = con.cursor()
-        cur.execute("INSERT INTO blog_detail (user_name, title,content,date,published)  VALUES (?,?,?,?,?)",('rajneesh',user['title'],user['data'],'1nov2018',1))            
+        cur.execute("INSERT INTO blog_detail (user_name, title,content,date,published)  VALUES (?,?,?,?,?)",('rajat',user['title'],user['data'],'1nov2018',1))            
         con.commit()
         
       #print msg, '---', dict
@@ -96,13 +103,23 @@ def comment(args1):
     with sql.connect("database.db") as con:
       con.row_factory = sql.Row
       cur = con.cursor()
-      cur.execute("select * from comment where blog_id = ?", (args1['blog_id'])) 
-      print args1['blog_id']
+      print "args in model.comment",args1
+      cur.execute("select * from comment") 
+      print args1
       rows = cur.fetchall()
       comment=[]
       for row in rows:
+        if row['blog_id']==int(args1):
            comment.append(row)
       return (comment)
   except:
       print "connection failed"
       return ([], "connection failed")
+
+def add_comment(arg):
+  try:
+    with sql.connect("database.db") as con:
+      cur = con.cursor()
+      cur.execute("INSERT INTO comment (comment,blog_id,user_name) VALUES(?,?,?)", (arg["plain_text"],12,"rajneesh"))
+  except:
+    pass
