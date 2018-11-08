@@ -28,18 +28,25 @@
 
     <div class="col-sm-9">
       {% for post in blogs %}
-        <hr>
-        <br>
-        <h2>{{post.title}}</h2>
-        <h5><span class="glyphicon glyphicon-time"></span>{{post.date}}</h5>
-        <h4><small>-- {{post.user_name}}</small></h4>
-        <p>{{post.content | safe }}</p>
-        <button name="edit_blog" id="edit_blog" value="edit_blog" class="btn btn-primary">Edit Blog</button>
-        <button name="delete_blog" id="delete_blog" value="delete_blog" class="btn btn-danger">Delete Blog</button>
-        <button name="edit_blog" id="edit_blog" value="edit_blog" class="btn btn-primary">Show Comments</button>
-        <br><br>
-      {% endfor %}
+      <div id="blog{{post.blog_id}}">
+      <hr>
+      <!-- <h2>{{post.title}}</h2>
+      <h5><span class="glyphicon glyphicon-time"></span>{{post.date}}</h5>
+      <p id='blog{{post.blog_id}}' style="overflow:hidden;max-height: 100px;display: block;">{{post.content | safe }}</p>
+      <button class="btn btn-secondary"onClick="{if(this.textContent=='more'){document.getElementById('blog{{post.blog_id}}').style.maxHeight='none';this.textContent='less';}else{document.getElementById('blog{{post.blog_id}}').style.maxHeight='300px';this.textContent='more';}}" >more</button> -->
+      <h3>{{ post.title }}</h3>
+      <h4>{{ post.user_name }}</h4>
+      <div id='blog{{post.blog_id}}' style="display:block;max-height:200px; overflow: hidden;">{{ post.content | safe }}</div>
+  <button onClick="{if(this.textContent=='more'){document.getElementById('blog{{post.blog_id}}').style.maxHeight='none';this.textContent='less';}else{document.getElementById('blog{{post.blog_id}}').style.maxHeight='200px';this.textContent='more';}}" >more</button>
+  <button id='comment' onclick="{var div =document.getElementById('comment{{post.blog_id}}');if(div.style.display=='none'){div.style.display='block';get_comment('{{post.blog_id}}')}else{div.style.display='none'}}">comment</button>
+  <button id="delete{{post.blog_id}}" name="delete{{post.blog_id}}" onclick="del_blog('{{post.blog_id}}')" >Delete</button>
+  <button id="edit{{post.blog_id}}" name="edit{{post.blog_id}}" onclick="del_blog('{{post.blog_id}}')" >Edit</button>
+  <div style="display:none;" id='comment{{post.blog_id}}'>
+  </div>
+      <br><br>
     </div>
+    {% endfor %}
+      </div>
   </div>
 </div>
 {%else%}

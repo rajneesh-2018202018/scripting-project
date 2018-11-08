@@ -115,8 +115,20 @@ def add_comment():
     else:
         return index()
 
-@app.route('/del_blog')
+@app.route('/del_blog', methods = ["GET","POST"])
 def del_blog():
+    if request.method=="GET":
         msg = dbHandler.del_blogs(request.args["blog_id"])
-        return render_template('admin.html',user=msg)
+        print "blog id is : ",request.args["blog_id"]
+        print msg
+        if msg:
+            return '1'
+        return '0'
+    else:
+        msg = dbHandler.del_blogs(request.form["blog_id"])
+        print "blog id is : ",request.form["blog_id"]
+        print msg
+        if msg:
+            return '1'
+        return '0'
     

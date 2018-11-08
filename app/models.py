@@ -123,3 +123,14 @@ def add_comment(arg):
       cur.execute("INSERT INTO comment (comment,blog_id,user_name) VALUES(?,?,?)", (arg["plain_text"],12,"rajneesh"))
   except:
     pass
+
+def del_blogs(arg):
+  try:
+    with sql.connect("database.db") as con:
+      cur=con.cursor()
+      print "value of arg = " , arg
+      queryString = "Delete from blog_detail where blog_id='%s'"%arg
+      cur.execute(queryString)
+      return "success"
+  except:
+    return "Failure"

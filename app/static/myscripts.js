@@ -5,6 +5,7 @@ function enable_iframe()
     else
         rich_test.document.designMode = "on";
 }
+
 function change(command)
 {
     rich_test.document.execCommand(command,false,null);
@@ -59,4 +60,27 @@ function get_comment(blog_id)
     xhr.send(formData);
     //   document.getElementById('text_name').value=y;
     return y; 
+}
+
+
+function del_blog(blog_id)
+{
+    var formData = new FormData();
+    formData.append('blog_id', blog_id);
+
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText, typeof(this.responseText));
+            if (this.responseText=='1')
+                $("#blog"+blog_id).fadeOut();
+        
+        // document.getElementById("delete"+blog_id).innerHTML = this.responseText + text;
+        }
+    };
+    xhr.open('POST', 'http://127.0.0.1:5000/del_blog', true);
+    xhr.send(formData);
+    //   document.getElementById('text_name').value=y;
+    // return y; 
+    
 }
