@@ -22,3 +22,14 @@ footer {
 body{
   background-image: "./background.png"; 
   }
+
+#initial{
+  border-radius: 25px;
+  -moz-animation: fadein 2s;
+  animation: fadein 2s;
+}
+
+@-moz-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

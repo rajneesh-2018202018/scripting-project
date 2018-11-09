@@ -23,6 +23,11 @@ function show()
   var formData = new FormData();
   formData.append('data', y);
   formData.append('title',title);
+  url=window.location.href;
+  temp=url.split('/');
+  blog_id=temp[temp.length-1];
+  console.log(blog_id);
+  formData.append('blog_id',blog_id);
 
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
@@ -71,9 +76,9 @@ function del_blog(blog_id)
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText, typeof(this.responseText));
+            // console.log(this.responseText, typeof(this.responseText));
             if (this.responseText=='1')
-                $("#blog"+blog_id).fadeOut();
+                $("#blog"+blog_id).fadeOut('slow');
         
         // document.getElementById("delete"+blog_id).innerHTML = this.responseText + text;
         }
@@ -83,4 +88,26 @@ function del_blog(blog_id)
     //   document.getElementById('text_name').value=y;
     // return y; 
     
+}
+
+function edit_blog(blog_id){
+    // var formData = new FormData();
+    // formData.append('blog_id', blog_id);
+
+    // var xhr = new XMLHttpRequest();
+    // xhr.onreadystatechange = function() {
+    //     if (this.readyState == 4 && this.status == 200) {
+    //         // console.log(this.responseText, typeof(this.responseText));
+    //         if (this.responseText=='1')
+    //             $("#blog"+blog_id).fadeOut('slow');
+        
+    //     // document.getElementById("delete"+blog_id).innerHTML = this.responseText + text;
+    //     }
+    // };
+    // str = 'http://127.0.0.1:5000/editor/'+blog_id;
+    // console.log(str);
+    // xhr.open('POST', str, true);
+    // xhr.send(formData);
+    url = "/editor/"+blog_id;
+    window.location = url;
 }

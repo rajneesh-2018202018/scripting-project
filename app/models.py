@@ -1,7 +1,7 @@
 import sqlite3 as sql
 from flask import session
 from passlib.hash import sha256_crypt
-
+import requests
 def insertUser(request):
     con = sql.connect("database.db")
     sqlQuery = "select username from user_details where (username ='" + request.form['username'] + "')"
@@ -64,16 +64,45 @@ def retrieveBlogs(user=None):
     print "Connection Error"
     return([],"connection Fault")
 
+def retrieveParticular(blog_id): 
+  try:
+    with sql.connect("database.db") as con:
+      print "-------------------------------inside Retrieve blogs------------------------------------------------"
+      con.row_factory = sql.Row
+      cur = con.cursor()
+      if blog_id!=None:
+        print "======================Value of user=============================" + blog_id
+        cur.execute("select content from blog_detail WHERE blog_id={x}".format(x=blog_id))
+        print "Query successfully executed-----------------------------------------"
+        rows = cur.fetchone()
+        return rows["content"]
+  except:
+    print "Connection Error"
+    return([],"connection Fault")
+
+
 # add blog (Nawab)
 def addUser(user):
   try:
 
    msg = "Record successfully added"
-  
    with sql.connect("database.db") as con:
         cur = con.cursor()
-        cur.execute("INSERT INTO blog_detail (user_name, title,content,date,published)  VALUES (?,?,?,?,?)",('rajat',user['title'],user['data'],'1nov2018',1))            
-        con.commit()
+        sqlQuery = "select * from blog_detail where blog_id = '%s'"%user['blog_id']  
+        # print user['data'], user['blog_id']
+        cur.execute(sqlQuery)
+        row = cur.fetchone()
+        if not row:
+          cur.execute("INSERT INTO blog_detail (user_name, title,content,date,published)  VALUES (?,?,?,?,?)",('rajat',user['title'],user['data'],'1nov2018',1))
+          con.commit()
+        else:
+          print "inside update condition"
+          # sqlQuery1="update blog_detail set content='"+ user['data']+"' where blog_id='"+user['blog_id']+"'"
+          # cur.execute(sqlQuery1)
+          # sqlQuery1="update blog_detail set content=? where blog_id='?'"
+          cur.execute("UPDATE blog_detail SET content='{x}' WHERE blog_id={id}".format(x=user["data"],id=user["blog_id"]))
+          con.commit()
+
         
       #print msg, '---', dict
         return  (user, msg)

@@ -62,8 +62,14 @@
     <br>
   </div>
 <!-- <textarea name="tile" id="title" required></textarea> -->
-    <iframe name='rich_test' class="form-control" id="ifr1" style="width:100%;height:40%;" onkeyup="show()"></iframe>
+    <iframe name='rich_test' class="form-control" id="ifr1" style="width:100%;height:40%;">jfdhj</iframe>
     <br/>
     <button onclick="show()" class="form-control">submit</button>
 </div>
+<script>
+    window.onload = function() {
+        // abc = {{ abc | safe }}
+        window.frames[0].document.body.innerHTML="{{abc | safe}}";  
+    };
+</script>
 {%endblock%}

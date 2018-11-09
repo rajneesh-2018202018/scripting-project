@@ -40,7 +40,7 @@
   <button onClick="{if(this.textContent=='more'){document.getElementById('blog{{post.blog_id}}').style.maxHeight='none';this.textContent='less';}else{document.getElementById('blog{{post.blog_id}}').style.maxHeight='200px';this.textContent='more';}}" >more</button>
   <button id='comment' onclick="{var div =document.getElementById('comment{{post.blog_id}}');if(div.style.display=='none'){div.style.display='block';get_comment('{{post.blog_id}}')}else{div.style.display='none'}}">comment</button>
   <button id="delete{{post.blog_id}}" name="delete{{post.blog_id}}" onclick="del_blog('{{post.blog_id}}')" >Delete</button>
-  <button id="edit{{post.blog_id}}" name="edit{{post.blog_id}}" onclick="del_blog('{{post.blog_id}}')" >Edit</button>
+  <button id="edit{{post.blog_id}}" name="edit{{post.blog_id}}" onclick="edit_blog('{{post.blog_id}}')" >Edit</button>
   <div style="display:none;" id='comment{{post.blog_id}}'>
   </div>
       <br><br>

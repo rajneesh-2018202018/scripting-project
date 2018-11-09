@@ -78,9 +78,15 @@ def addrec():
    return 'hope working'
    #return render_template("result.html", result = res, message = request.method + " : " + msg)
 
+@app.route('/editor/<blog_id>', methods=["GET","POST"])
+def editor(blog_id):
+    msg = dbHandler.retrieveParticular(blog_id)
+    print msg
+    return render_template('editor.html',abc= msg)
+
 @app.route('/editor')
-def editor():
-    return render_template('editor.html')
+def blank_editor():
+    return render_template('editor.html',abc="")
 
 @app.route('/admin')
 def admin():
