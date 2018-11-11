@@ -116,7 +116,7 @@ def comments():
 @app.route('/add_comment',methods = ['POST', 'GET'])
 def add_comment():
     if request.method =="POST":
-        dbHandler.add_comment(request.form)
+        dbHandler.add_comment(request.form, session)
         return index()
     else:
         return index()

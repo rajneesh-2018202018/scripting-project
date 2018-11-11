@@ -96,7 +96,7 @@ def addUser(user):
         now = datetime.datetime.now()
 
         if not row:
-          cur.execute("INSERT INTO blog_detail (user_name, title,content,date,published)  VALUES (?,?,?,?,?)",(session['username'],user['title'],user['data'],now.strftime("%Y-%m-%d"),1))
+          cur.execute("INSERT INTO blog_detail (user_name, title,content,date,published)  VALUES (?,?,?,?,?)",(session['username'],user['title'],user['data'],now.strftime("%Y-%m-%d"),user['published']))
           con.commit()
         else:
           print "inside update condition "
@@ -112,7 +112,8 @@ def addUser(user):
             info.append(row)
           print info[0]
           if info[0]==session["username"]:
-            cur.execute("UPDATE blog_detail SET content='{x}' WHERE blog_id={id}".format(x=user["data"],id=user["blog_id"]))
+            print user["published"]
+            cur.execute("UPDATE blog_detail SET content='{x}', published={y} WHERE blog_id={id}".format(x=user["data"],y=int(user["published"]),id=user["blog_id"]))
             con.commit()
 
         
@@ -129,7 +130,7 @@ def getAll():
     with sql.connect("database.db") as con:
       con.row_factory = sql.Row
       cur = con.cursor()
-      cur.execute("select * from blog_detail ORDER BY date ASC") 
+      cur.execute("select * from blog_detail WHERE published = 1 ORDER BY date ASC") 
       rows = cur.fetchall()
       user=[]
       for row in rows:
@@ -157,13 +158,14 @@ def comment(args1):
       print "connection failed"
       return ([], "connection failed")
 
-def add_comment(arg):
+def add_comment(arg,s):
   try:
     with sql.connect("database.db") as con:
       cur = con.cursor()
-      cur.execute("INSERT INTO comment (comment,blog_id,user_name) VALUES(?,?,?)", (arg["plain_text"],12,"rajneesh"))
+
+      cur.execute("INSERT INTO comment (comment,blog_id,user_name) VALUES(?,?,?)", (arg["plain_text"],arg["blog_id"],s["username"]))
   except:
-    pass
+    print "INSIDE ADD_EXCEPT"
 
 def del_blogs(arg):
   try:

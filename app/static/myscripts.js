@@ -14,7 +14,7 @@ function changewitharg(command,arg)
 {
     rich_test.document.execCommand(command,false,arg);
 }
-function show()
+function show(i)
 {
 //   var x = document.getElementsByName("rich_test");
   var y = (window.frames[0].document.body.innerHTML );
@@ -23,6 +23,7 @@ function show()
   var formData = new FormData();
   formData.append('data', y);
   formData.append('title',title);
+  formData.append('published',i);
   url=window.location.href;
   temp=url.split('/');
   blog_id=temp[temp.length-1];
@@ -52,8 +53,8 @@ function get_comment(blog_id)
         if (this.readyState == 4 && this.status == 200) {
             console.log(this.responseText)
 
-
             text =   '<hr/><form action="/add_comment" class="form-inline" method = "post">'+
+            '<textarea name="blog_id" value="'+blog_id + '"hidden>'+blog_id+'</textarea>'+
             '<input type="text" class="form-control" name="plain_text" placeholder="Enter your comment here" style="width:80%;margin-right:1em;">'+
             '<button class="btn btn-default" onclick="submit">Submit</button></form>'
           
