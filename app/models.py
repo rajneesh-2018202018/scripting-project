@@ -195,3 +195,27 @@ def particularProfile(arg):
       return user_blogs
   except:
     return "Error occured"
+
+def particularBlog(id):
+  try:
+    with sql.connect("database.db") as con:
+      con.row_factory = sql.Row
+      cur = con.cursor()
+      # print "HERE"
+      cur.execute("SELECT * FROM blog_detail WHERE blog_id = '{x}' and PUBLISHED = 1".format(x=id))
+      rows = cur.fetchall()
+      # print "here"
+      cur.execute("SELECT * FROM comment WHERE blog_id = '{x}'".format(x=id))
+      temp = cur.fetchall()
+      # print row
+      blog = []
+      for row in rows:
+        blog.append(row)
+      comment=[]
+      for t in temp:
+        comment.append(t)
+      # print blog
+      return blog, comment
+  except:
+    print "unexpected"
+    pass

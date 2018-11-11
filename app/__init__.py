@@ -116,6 +116,13 @@ def add_comment():
     else:
         return index()
 
+@app.route('/add_comment_blog',methods = ['POST', 'GET'])
+def add_comment_blog():
+    if request.method =="POST":
+        dbHandler.add_comment(request.form, session)
+    print "request.form", request.form["blog_id"]
+    return particularBlog(request.form["blog_id"])
+
 @app.route('/del_blog', methods = ["GET","POST"])
 def del_blog():
     if request.method=="GET":
@@ -139,3 +146,16 @@ def particularProfile(username):
         data = dbHandler.particularProfile(username)
         print data
         return render_template('profile.html', posts = data)
+    
+@app.route('/blog/<id>')
+def particularBlog(id):
+    if request.method=='GET':
+        blog, com = dbHandler.particularBlog(id)
+        print com
+        print blog
+        return render_template('blog.html', posts = blog, comment = com)
+    else:
+        blog, com = dbHandler.particularBlog(id)
+        print com
+        print blog
+        return render_template('blog.html', posts = blog, comment = com)
