@@ -2,13 +2,14 @@ import sqlite3 as sql
 from flask import session
 from passlib.hash import sha256_crypt
 import requests
+import datetime
 def insertUser(request):
     con = sql.connect("database.db")
     sqlQuery = "select username from user_details where (username ='" + request.form['username'] + "')"
     cur = con.cursor()
     cur.execute(sqlQuery)
     row = cur.fetchone()
-    print row
+    print row #check
     
     if not row:
         cur.execute("INSERT INTO user_details (username,password,name,dob,email,gender,isadmin,facebook) VALUES (?,?,?,?,?,?,?,?)", (request.form['username'], 
@@ -51,7 +52,7 @@ def retrieveBlogs(user=None):
       cur = con.cursor()
       if user!=None:
         print "======================Value of user=============================" + user
-        cur.execute("select * from blog_detail")
+        cur.execute("select * from blog_detail ORDER BY date")
         print "Query successfully executed-----------------------------------------"
         rows = cur.fetchall()
         print "tag"
@@ -92,16 +93,27 @@ def addUser(user):
         # print user['data'], user['blog_id']
         cur.execute(sqlQuery)
         row = cur.fetchone()
+        now = datetime.datetime.now()
+
         if not row:
-          cur.execute("INSERT INTO blog_detail (user_name, title,content,date,published)  VALUES (?,?,?,?,?)",('rajat',user['title'],user['data'],'1nov2018',1))
+          cur.execute("INSERT INTO blog_detail (user_name, title,content,date,published)  VALUES (?,?,?,?,?)",(session['username'],user['title'],user['data'],now.strftime("%Y-%m-%d"),1))
           con.commit()
         else:
-          print "inside update condition"
+          print "inside update condition "
+          print user["blog_id"]
           # sqlQuery1="update blog_detail set content='"+ user['data']+"' where blog_id='"+user['blog_id']+"'"
           # cur.execute(sqlQuery1)
           # sqlQuery1="update blog_detail set content=? where blog_id='?'"
-          cur.execute("UPDATE blog_detail SET content='{x}' WHERE blog_id={id}".format(x=user["data"],id=user["blog_id"]))
-          con.commit()
+          cur.execute("SELECT (user_name) from blog_detail WHERE blog_id={x}".format(x=user["blog_id"]))
+          print "hi"
+          rows = cur.fetchone()
+          info=[]
+          for row in rows:
+            info.append(row)
+          print info[0]
+          if info[0]==session["username"]:
+            cur.execute("UPDATE blog_detail SET content='{x}' WHERE blog_id={id}".format(x=user["data"],id=user["blog_id"]))
+            con.commit()
 
         
       #print msg, '---', dict
@@ -117,7 +129,7 @@ def getAll():
     with sql.connect("database.db") as con:
       con.row_factory = sql.Row
       cur = con.cursor()
-      cur.execute("select * from blog_detail") 
+      cur.execute("select * from blog_detail ORDER BY date ASC") 
       rows = cur.fetchall()
       user=[]
       for row in rows:
