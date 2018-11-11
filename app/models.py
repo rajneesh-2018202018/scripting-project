@@ -177,3 +177,19 @@ def del_blogs(arg):
       return "success"
   except:
     return "Failure"
+
+
+def particularProfile(arg):
+  try:
+    with sql.connect("database.db") as con:
+      con.row_factory = sql.Row
+      cur = con.cursor()
+      cur.execute("SELECT * FROM blog_detail WHERE user_name = '{x}' and PUBLISHED = 1".format(x=arg))
+      print "here"
+      rows = cur.fetchall()
+      user_blogs = []
+      for row in rows:
+        user_blogs.append(row)
+      return user_blogs
+  except:
+    return "Error occured"

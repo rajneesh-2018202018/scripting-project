@@ -36,8 +36,13 @@
       <button class="btn btn-secondary"onClick="{if(this.textContent=='more'){document.getElementById('blog{{post.blog_id}}').style.maxHeight='none';this.textContent='less';}else{document.getElementById('blog{{post.blog_id}}').style.maxHeight='300px';this.textContent='more';}}" >more</button> -->
       <h3>{{ post.title }}</h3>
       <h4>{{ post.user_name }}</h4>
-      <div id='blog{{post.blog_id}}' style="display:block;max-height:200px; overflow: hidden;">{{ post.content | safe }}</div>
-  <button onClick="{if(this.textContent=='more'){document.getElementById('blog{{post.blog_id}}').style.maxHeight='none';this.textContent='less';}else{document.getElementById('blog{{post.blog_id}}').style.maxHeight='200px';this.textContent='more';}}" >more</button>
+      <div id='blog1{{post.blog_id}}' style="display:block;max-height:300px; overflow: hidden;">{{ post.content | safe }}</div>
+  <!-- <button onClick="{if(this.textContent=='more'){document.getElementById('blog{{post.blog_id}}').style.maxHeight='none';this.textContent='less';}else{document.getElementById('blog{{post.blog_id}}').style.maxHeight='200px';this.textContent='more';}}" >more</button> -->
+  <script>
+    if(document.getElementById('blog1{{post.blog_id}}').offsetHeight>280)
+        document.write("<button onClick=\"{if(this.textContent=='more'){document.getElementById('blog1{{post.blog_id}}').style.maxHeight='none';this.textContent='less';}else{document.getElementById('blog1{{post.blog_id}}').style.maxHeight='300px';this.textContent='more';}}\" >more</button>");
+</script>
+
   <button id='comment' onclick="{var div =document.getElementById('comment{{post.blog_id}}');if(div.style.display=='none'){div.style.display='block';get_comment('{{post.blog_id}}')}else{div.style.display='none'}}">comment</button>
   <button id="delete{{post.blog_id}}" name="delete{{post.blog_id}}" onclick="del_blog('{{post.blog_id}}')" >Delete</button>
   <button id="edit{{post.blog_id}}" name="edit{{post.blog_id}}" onclick="edit_blog('{{post.blog_id}}')" >Edit</button>

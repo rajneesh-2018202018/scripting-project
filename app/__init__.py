@@ -138,3 +138,9 @@ def del_blog():
             return '1'
         return '0'
     
+@app.route('/profile/<username>')
+def particularProfile(username):
+    if request.method=='GET':
+        data = dbHandler.particularProfile(username)
+        print data
+        return render_template('profile.html', posts = data)
