@@ -55,18 +55,6 @@ def register():
     
     return render_template('register.html')
 
-
-@app.route('/secret_page')
-def secret_page():
-
-    #only logged in user is allowed see other users' details.
-    if 'username' in session :
-       rows = dbHandler.retrieveUsers()
-       print rows
-       return render_template("showall.html", rows = rows)
-    else:
-       return redirect(url_for('login'))
-
 ###########################################################################
 @app.route('/addrec',methods = ['POST', 'GET'])
 def addrec():
@@ -80,22 +68,29 @@ def addrec():
 
 @app.route('/editor/<blog_id>', methods=["GET","POST"])
 def editor(blog_id):
-    msg = dbHandler.retrieveParticular(blog_id)
-    print msg
-    return render_template('editor.html',abc= msg)
+    if "username" in session:
+        msg = dbHandler.retrieveParticular(blog_id)
+        print msg
+        return render_template('editor.html',abc= msg)
+    else:
+        return login()
 
 @app.route('/editor')
 def blank_editor():
-    return render_template('editor.html',abc="")
+    if "username" in session:
+        return render_template('editor.html',abc="")
+    else:
+        return login()
 
 @app.route('/admin')
 def admin():
-   blogs_sent = dbHandler.retrieveBlogs(session['username'])
-   print "in init --------------", session['username']
+   
+#    print "in init --------------", session['username']
    if 'username' in session:
+       blogs_sent = dbHandler.retrieveBlogs(session['username'])
        return render_template("admin.html", logged_in = True,  username=session['username'], blogs=blogs_sent)
    else:
-       return render_template("admin.html", logged_in = False,  username=None, blogs=blogs_sent)
+       return login()
 
 
 @app.route('/showall')

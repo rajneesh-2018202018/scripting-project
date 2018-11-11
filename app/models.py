@@ -162,8 +162,10 @@ def add_comment(arg,s):
   try:
     with sql.connect("database.db") as con:
       cur = con.cursor()
-
-      cur.execute("INSERT INTO comment (comment,blog_id,user_name) VALUES(?,?,?)", (arg["plain_text"],arg["blog_id"],s["username"]))
+      if "username" in s:
+        cur.execute("INSERT INTO comment (comment,blog_id,user_name) VALUES(?,?,?)", (arg["plain_text"],arg["blog_id"],s["username"]))
+      else:
+        cur.execute("INSERT INTO comment (comment,blog_id,user_name) VALUES(?,?,?)", (arg["plain_text"],arg["blog_id"],"anonymous"))
   except:
     print "INSIDE ADD_EXCEPT"
 
