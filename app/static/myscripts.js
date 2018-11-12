@@ -19,11 +19,13 @@ function show(i)
 //   var x = document.getElementsByName("rich_test");
   var y = (window.frames[0].document.body.innerHTML );
   title=document.getElementById('title').value;
-  alert(y);
+//   alert(y);
   var formData = new FormData();
   formData.append('data', y);
   formData.append('title',title);
   formData.append('published',i);
+  formData.append('theme',document.getElementById("theme_choice").value);
+  alert(document.getElementById("theme_choice").value);
   url=window.location.href;
   temp=url.split('/');
   blog_id=temp[temp.length-1];
@@ -39,6 +41,7 @@ function show(i)
   xhr.open('POST', 'http://127.0.0.1:5000/addrec', true);
   xhr.send(formData);
 //   document.getElementById('text_name').value=y;
+    window.location = '/admin'
   return y;
 }
 setTimeout(enable_iframe(),50)

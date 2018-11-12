@@ -151,9 +151,16 @@ def particularProfile(username):
 def particularBlog(id):
     if request.method=='GET':
         blog, com = dbHandler.particularBlog(id)
-        print com
-        print blog
-        return render_template('blog.html', posts = blog, comment = com)
+        print blog[0]["theme"]
+        if blog[0]["theme"] == 'theme1' or blog[0]["theme"]==None:
+            return render_template('blog.html', posts = blog, comment = com)
+        if blog[0]["theme"] == 'theme2':
+            print "inside theme 2"
+            return render_template('blog.html', posts = blog, comment = com)
+        if blog[0]["theme"] == 'theme3':
+            print "inside theme 3"
+            return render_template('blog.html', posts = blog, comment = com)
+
     else:
         blog, com = dbHandler.particularBlog(id)
         print com

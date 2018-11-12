@@ -7,15 +7,29 @@
 </form>
 {% endblock %}
 {%block content%}
-<div class="container">
-    <div class="row content">
-    {% for post in blogs %}
-      <hr>
-      <h2>{{post.title}}</h2>
-      <h5><span class="glyphicon glyphicon-time"></span>{{post.date}}</h5>
-      <p>{{post.content | safe }}</p>
-      <br><br>
-    {% endfor %}
-    </div>
-</div>
+        <div class="container">
+            <div class="row content">
+            {% for post in blogs %}
+            <hr>
+            <!-- <h2>{{post.title}}</h2>
+            <h5><span class="glyphicon glyphicon-time"></span>{{post.date}}</h5>
+            <p id='blog{{post.blog_id}}' style="overflow:hidden;max-height: 100px;display: block;">{{post.content | safe }}</p>
+            <button class="btn btn-secondary"onClick="{if(this.textContent=='more'){document.getElementById('blog{{post.blog_id}}').style.maxHeight='none';this.textContent='less';}else{document.getElementById('blog{{post.blog_id}}').style.maxHeight='300px';this.textContent='more';}}" >more</button> -->
+            <h3><a href="/blog/{{post.blog_id}}">{{ post.title }}</a></h3>
+            <h4>{{ post.user_name }}</h4>
+            <div id='blog{{post.blog_id}}' style="display:block;max-height:300px; overflow: hidden;">{{ post.content | safe }}</div>
+          <!-- <button onClick="{if(this.textContent=='more'){document.getElementById('blog{{post.blog_id}}').style.maxHeight='none';this.textContent='less';}else{document.getElementById('blog{{post.blog_id}}').style.maxHeight='200px';this.textContent='more';}}" >more</button> -->
+          <script>
+          if(document.getElementById('blog{{post.blog_id}}').offsetHeight>280)
+              document.write("<button onClick=\"{if(this.textContent=='more'){document.getElementById('blog{{post.blog_id}}').style.maxHeight='none';this.textContent='less';}else{document.getElementById('blog{{post.blog_id}}').style.maxHeight='300px';this.textContent='more';}}\" >more</button>");
+          </script>
+          
+          <button id='comment' onclick="{var div =document.getElementById('comment{{post.blog_id}}');if(div.style.display=='none'){div.style.display='block';get_comment('{{post.blog_id}}')}else{div.style.display='none'}}">comment</button>
+          <div style="display:none;" id='comment{{post.blog_id}}'>
+          </div>
+            <br><br>
+           
+            {% endfor %}
+            </div>
+            </div>
 {%endblock%}

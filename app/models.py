@@ -96,7 +96,7 @@ def addUser(user):
         now = datetime.datetime.now()
 
         if not row:
-          cur.execute("INSERT INTO blog_detail (user_name, title,content,date,published)  VALUES (?,?,?,?,?)",(session['username'],user['title'],user['data'],now.strftime("%Y-%m-%d"),user['published']))
+          cur.execute("INSERT INTO blog_detail (user_name, title,content,date,published,theme)  VALUES (?,?,?,?,?,?)",(session['username'],user['title'],user['data'],now.strftime("%Y-%m-%d"),user['published'], user["theme"]))
           con.commit()
         else:
           print "inside update condition "
@@ -112,8 +112,8 @@ def addUser(user):
             info.append(row)
           print info[0]
           if info[0]==session["username"]:
-            print user["published"]
-            cur.execute("UPDATE blog_detail SET content='{x}', published={y} WHERE blog_id={id}".format(x=user["data"],y=int(user["published"]),id=user["blog_id"]))
+            print user["theme"]
+            cur.execute("UPDATE blog_detail SET content='{x}', published={y}, theme='{t}' WHERE blog_id={id}".format(x=user["data"],y=int(user["published"]),id=user["blog_id"], t=user["theme"]))
             con.commit()
 
         
