@@ -20,12 +20,18 @@ function show(i)
   var y = (window.frames[0].document.body.innerHTML );
   title=document.getElementById('title').value;
 //   alert(y);
+if (title=="" || y=="")
+{
+    alert("Title and data should be present")
+    return;
+}
+  var x = y.replace('"', '\"');
   var formData = new FormData();
-  formData.append('data', y);
+  formData.append('data', x);
   formData.append('title',title);
   formData.append('published',i);
   formData.append('theme',document.getElementById("theme_choice").value);
-  alert(document.getElementById("theme_choice").value);
+  
   url=window.location.href;
   temp=url.split('/');
   blog_id=temp[temp.length-1];
@@ -40,8 +46,10 @@ function show(i)
 };
   xhr.open('POST', 'http://127.0.0.1:5000/addrec', true);
   xhr.send(formData);
+  alert("Your blog is successfully uploaded");
+  window.location = "/admin";
 //   document.getElementById('text_name').value=y;
-    window.location = '/admin'
+    // window.location = '/admin'
   return y;
 }
 setTimeout(enable_iframe(),50)

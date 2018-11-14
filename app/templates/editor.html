@@ -1,4 +1,21 @@
-{%extends 'base.html'%}
+{% extends "bootstrap/base.html" %}
+{% block styles %}
+{{super()}}
+<link rel="stylesheet"
+      href="{{url_for('.static', filename='main.css')}}">
+<link rel="stylesheet"
+      href="{{url_for('.static', filename='css/w3.css')}}">
+
+<link rel="stylesheet"
+      href="{{url_for('.static', filename='css/font-awesome.min.css')}}">
+
+{% endblock %}
+{% block scripts %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="{{url_for('.static', filename='myscripts.js')}}"></script>
+{{super()}}
+{% endblock %}
 {%block content%}
 <div class="container">
 <div style="text-align:center">
@@ -76,8 +93,12 @@
 </div>
 <script>
     window.onload = function() {
-        // abc = {{ abc | safe }}
-        window.frames[0].document.body.innerHTML="{{abc | safe}}";  
+        if("{{title}}"!="")
+        {           
+             window.frames[0].document.body.innerHTML='{{abc | safe}}';  
+             document.getElementById("title").value = "{{title}}";
+             document.getElementById("title").disabled = true;
+        }
     };
 </script>
 {%endblock%}

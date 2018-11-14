@@ -19,10 +19,6 @@ footer {
   .row.content {height: auto;} 
 }
 
-body{
-  background-image: "./background.png"; 
-  }
-
 #initial{
   border-radius: 25px;
   -moz-animation: fadein 2s;
@@ -33,3 +29,4 @@ body{
   from { opacity: 0; }
   to   { opacity: 1; }
 }
+

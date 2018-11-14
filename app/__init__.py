@@ -11,6 +11,14 @@ Bootstrap(app)
 app.secret_key = 'MKhJHJH798798kjhkjhkjGHh'
 
 @app.route('/')
+def home():
+    blogs_sent = dbHandler.getAll()
+    if 'username' in session:
+        return render_template("indexhome.html", logged_in = True,  username=session['username'], blogs=blogs_sent)
+    else:
+       return render_template("indexhome.html", logged_in = False,  username=None, blogs=blogs_sent) 
+
+@app.route('/home')
 def index():
    blogs_sent = dbHandler.getAll()
    if 'username' in session:
@@ -59,6 +67,7 @@ def register():
 @app.route('/addrec',methods = ['POST', 'GET'])
 def addrec():
    if request.method == "GET":
+      print "HI - in init"
       res, msg = dbHandler.addUser(request.args)
    else:
       res, msg = dbHandler.addUser(request.form)
@@ -69,9 +78,9 @@ def addrec():
 @app.route('/editor/<blog_id>', methods=["GET","POST"])
 def editor(blog_id):
     if "username" in session:
-        msg = dbHandler.retrieveParticular(blog_id)
+        msg, title1 = dbHandler.retrieveParticular(blog_id)
         print msg
-        return render_template('editor.html',abc= msg)
+        return render_template('editor.html',abc= msg, title=title1)
     else:
         return login()
 
@@ -143,9 +152,8 @@ def del_blog():
 @app.route('/profile/<username>')
 def particularProfile(username):
     if request.method=='GET':
-        data = dbHandler.particularProfile(username)
-        print data
-        return render_template('profile.html', posts = data)
+        data, profiler = dbHandler.particularProfile(username)
+        return render_template('profile.html', posts = data, profile=profiler)
     
 @app.route('/blog/<id>')
 def particularBlog(id):
@@ -153,16 +161,26 @@ def particularBlog(id):
         blog, com = dbHandler.particularBlog(id)
         print blog[0]["theme"]
         if blog[0]["theme"] == 'theme1' or blog[0]["theme"]==None:
+            print "inside theme 1"
             return render_template('blog.html', posts = blog, comment = com)
         if blog[0]["theme"] == 'theme2':
             print "inside theme 2"
-            return render_template('blog.html', posts = blog, comment = com)
+            return render_template('blog2.html', posts = blog, comment = com)
         if blog[0]["theme"] == 'theme3':
             print "inside theme 3"
-            return render_template('blog.html', posts = blog, comment = com)
+            return render_template('blog3.html', posts = blog, comment = com)
 
     else:
         blog, com = dbHandler.particularBlog(id)
         print com
         print blog
-        return render_template('blog.html', posts = blog, comment = com)
+        print "ELSE"
+        if blog[0]["theme"] == 'theme1' or blog[0]["theme"]==None:
+            print "inside theme 1"
+            return render_template('blog.html', posts = blog, comment = com)
+        if blog[0]["theme"] == 'theme2':
+            print "inside theme 2"
+            return render_template('blog2.html', posts = blog, comment = com)
+        if blog[0]["theme"] == 'theme3':
+            print "inside theme 3"
+            return render_template('blog3.html', posts = blog, comment = com)

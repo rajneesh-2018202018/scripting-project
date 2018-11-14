@@ -47,15 +47,11 @@ def retrieveUsers():
 def retrieveBlogs(user=None): 
   try:
     with sql.connect("database.db") as con:
-      print "-------------------------------inside Retrieve blogs------------------------------------------------"
       con.row_factory = sql.Row
       cur = con.cursor()
       if user!=None:
-        print "======================Value of user=============================" + user
         cur.execute("select * from blog_detail ORDER BY date")
-        print "Query successfully executed-----------------------------------------"
         rows = cur.fetchall()
-        print "tag"
         users=[]
         for row in rows:
           if row['user_name']==user:
@@ -68,15 +64,13 @@ def retrieveBlogs(user=None):
 def retrieveParticular(blog_id): 
   try:
     with sql.connect("database.db") as con:
-      print "-------------------------------inside Retrieve blogs------------------------------------------------"
       con.row_factory = sql.Row
       cur = con.cursor()
       if blog_id!=None:
-        print "======================Value of user=============================" + blog_id
-        cur.execute("select content from blog_detail WHERE blog_id={x}".format(x=blog_id))
-        print "Query successfully executed-----------------------------------------"
+        cur.execute("select content, title from blog_detail WHERE blog_id={x}".format(x=blog_id))
+
         rows = cur.fetchone()
-        return rows["content"]
+        return (rows["content"], rows["title"])
   except:
     print "Connection Error"
     return([],"connection Fault")
@@ -89,8 +83,8 @@ def addUser(user):
    msg = "Record successfully added"
    with sql.connect("database.db") as con:
         cur = con.cursor()
+        print "HERE"
         sqlQuery = "select * from blog_detail where blog_id = '%s'"%user['blog_id']  
-        # print user['data'], user['blog_id']
         cur.execute(sqlQuery)
         row = cur.fetchone()
         now = datetime.datetime.now()
@@ -101,9 +95,6 @@ def addUser(user):
         else:
           print "inside update condition "
           print user["blog_id"]
-          # sqlQuery1="update blog_detail set content='"+ user['data']+"' where blog_id='"+user['blog_id']+"'"
-          # cur.execute(sqlQuery1)
-          # sqlQuery1="update blog_detail set content=? where blog_id='?'"
           cur.execute("SELECT (user_name) from blog_detail WHERE blog_id={x}".format(x=user["blog_id"]))
           print "hi"
           rows = cur.fetchone()
@@ -117,7 +108,6 @@ def addUser(user):
             con.commit()
 
         
-      #print msg, '---', dict
         return  (user, msg)
   except:
       msg = "Unexpected Error in insert operation"
@@ -130,7 +120,7 @@ def getAll():
     with sql.connect("database.db") as con:
       con.row_factory = sql.Row
       cur = con.cursor()
-      cur.execute("select * from blog_detail WHERE published = 1 ORDER BY date ASC") 
+      cur.execute("select * from blog_detail WHERE published = 1 ORDER BY date DESC") 
       rows = cur.fetchall()
       user=[]
       for row in rows:
@@ -186,13 +176,18 @@ def particularProfile(arg):
     with sql.connect("database.db") as con:
       con.row_factory = sql.Row
       cur = con.cursor()
-      cur.execute("SELECT * FROM blog_detail WHERE user_name = '{x}' and PUBLISHED = 1".format(x=arg))
-      print "here"
+      cur.execute("SELECT * FROM blog_detail WHERE user_name = '{x}' and PUBLISHED = 1 ORDER BY date DESC".format(x=arg))
       rows = cur.fetchall()
+      cur.execute("SELECT * FROM user_details WHERE username='{x}'".format(x=arg))
+      temp = cur.fetchall()
       user_blogs = []
       for row in rows:
         user_blogs.append(row)
-      return user_blogs
+      user_details=[]
+      for t in temp:
+        user_details.append(t)
+      print user_details
+      return (user_blogs, user_details)
   except:
     return "Error occured"
 
